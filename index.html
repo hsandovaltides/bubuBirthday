@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* 🎨 PALETA SOFISTICADA */
     --vino: #6d1b3c;
     --vino-oscuro: #4a0f28;
     --rosa: #d67b9c;
@@ -35,7 +34,6 @@
     100% { background-position: 0% 50%; }
   }
 
-  /* Estrellitas decorativas sutiles */
   body::before {
     content: '';
     position: fixed;
@@ -92,26 +90,31 @@
 
   #countdown-container {
     display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
+    gap: 10px;
+    flex-wrap: nowrap;
     justify-content: center;
-    margin-top: 10px;
+    align-items: stretch;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 480px;
     perspective: 1000px;
   }
 
   .time-box {
     position: relative;
+    flex: 1 1 0;
+    min-width: 0;
     background: linear-gradient(160deg, rgba(255,255,255,0.85), rgba(255,245,240,0.7));
-    border-radius: 24px;
-    padding: 28px 22px 20px;
-    min-width: 120px;
+    border-radius: 18px;
+    padding: 16px 6px 12px;
     box-shadow:
-      0 15px 35px var(--sombra),
+      0 10px 25px var(--sombra),
       0 1px 0 rgba(255,255,255,0.9) inset;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.9);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     overflow: hidden;
+    text-align: center;
   }
   .time-box::before {
     content: '';
@@ -121,13 +124,13 @@
     background: linear-gradient(90deg, transparent, var(--dorado), transparent);
   }
   .time-box:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 20px 45px var(--sombra);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px var(--sombra);
   }
 
   .time-box .num {
     font-family: 'Playfair Display', serif;
-    font-size: 3.2rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--vino);
     line-height: 1;
@@ -149,25 +152,12 @@
 
   .time-box .label {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     text-transform: uppercase;
-    letter-spacing: 2.5px;
+    letter-spacing: 1px;
     color: var(--rosa);
-    margin-top: 10px;
+    margin-top: 6px;
     font-weight: 500;
-  }
-
-  .separador {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    color: var(--dorado);
-    align-self: center;
-    opacity: 0.6;
-    animation: parpadeo 1s infinite alternate;
-  }
-  @keyframes parpadeo {
-    from { opacity: 0.3; }
-    to { opacity: 0.9; }
   }
 
   /* ---------- MENSAJE CUMPLEAÑOS ---------- */
@@ -188,15 +178,15 @@
 
   /* ---------- IMAGEN PAREJA ---------- */
   .pareja-img {
-    width: 260px;
-    max-width: 80vw;
+    width: 240px;
+    max-width: 75vw;
     height: auto;
-    border-radius: 28px;
+    border-radius: 24px;
     box-shadow:
       0 20px 45px rgba(109,27,60,0.3),
-      0 0 0 8px rgba(255,255,255,0.7),
-      0 0 0 10px rgba(201,168,106,0.4);
-    margin: 20px auto;
+      0 0 0 6px rgba(255,255,255,0.7),
+      0 0 0 8px rgba(201,168,106,0.4);
+    margin: 15px auto 25px;
     display: block;
     transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation: flotar 4s ease-in-out infinite;
@@ -205,19 +195,19 @@
   .pareja-img:hover { transform: scale(1.05) rotate(-2deg); }
   @keyframes flotar {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
-  .pareja-grande { width: 320px; }
+  .pareja-grande { width: 300px; }
 
   /* ---------- FRASES ROMÁNTICAS ---------- */
   #frase-romantica {
-    margin-top: 40px;
+    margin-top: 35px;
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 1.45rem;
+    font-size: 1.3rem;
     color: var(--vino-oscuro);
-    max-width: 620px;
-    min-height: 70px;
+    max-width: 560px;
+    min-height: 60px;
     padding: 0 25px;
     transition: opacity 0.8s ease, transform 0.8s ease;
     line-height: 1.6;
@@ -228,7 +218,7 @@
   #frase-romantica::after {
     content: '"';
     font-family: 'Playfair Display', serif;
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: var(--dorado);
     position: absolute;
     opacity: 0.5;
@@ -300,6 +290,7 @@
     border-radius: 30px;
     padding: 40px 35px;
     max-width: 520px;
+    width: 100%;
     box-shadow:
       0 25px 60px rgba(109,27,60,0.25),
       0 1px 0 rgba(255,255,255,1) inset;
@@ -484,22 +475,20 @@
     top: 22px;
     right: 22px;
     z-index: 1000;
-    width: 58px;
-    height: 58px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.8);
     background: linear-gradient(135deg, var(--vino), var(--rosa));
     color: white;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     cursor: pointer;
     box-shadow: 0 10px 25px rgba(109,27,60,0.4);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     backdrop-filter: blur(10px);
   }
   #music-btn:hover { transform: scale(1.12) rotate(8deg); }
-  #music-btn.playing {
-    animation: pulso 2s infinite;
-  }
+  #music-btn.playing { animation: pulso 2s infinite; }
   @keyframes pulso {
     0%, 100% { box-shadow: 0 10px 25px rgba(109,27,60,0.4); }
     50% { box-shadow: 0 10px 40px rgba(214,123,156,0.9); }
@@ -507,15 +496,45 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 600px) {
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.6rem; }
-    .time-box { min-width: 75px; padding: 18px 12px 14px; }
-    .time-box .num { font-size: 2.2rem; }
-    .time-box .label { font-size: 0.65rem; letter-spacing: 1.5px; }
-    .separador { font-size: 1.8rem; }
-    #happy-msg { font-size: 2.2rem; }
-    #frase-romantica { font-size: 1.15rem; }
-    .pareja-img { width: 200px; }
+    section { padding: 40px 14px; }
+    h1 { font-size: 1.8rem; margin-bottom: 18px; }
+    h2 { font-size: 1.5rem; margin-bottom: 22px; }
+    .countdown-title { font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 10px; }
+    #happy-msg { font-size: 2rem; }
+    #frase-romantica { font-size: 1rem; padding: 0 15px; margin-top: 28px; }
+    .pareja-img { width: 180px; margin: 10px auto 20px; }
+    .pareja-grande { width: 220px; }
+
+    #countdown-container {
+      gap: 7px;
+      max-width: 100%;
+      padding: 0 4px;
+      margin-top: 12px;
+    }
+    .time-box {
+      border-radius: 14px;
+      padding: 14px 4px 10px;
+    }
+    .time-box .num { font-size: 1.55rem; }
+    .time-box .label {
+      font-size: 0.52rem;
+      letter-spacing: 0.5px;
+      margin-top: 5px;
+    }
+
+    #music-btn { width: 48px; height: 48px; font-size: 1.1rem; top: 14px; right: 14px; }
+    #quiz-box { padding: 25px 20px; border-radius: 22px; }
+    #question { font-size: 1.15rem; }
+    .option { padding: 13px 16px; font-size: 0.95rem; }
+    .balloon { width: 80px; height: 98px; font-size: 1.6rem; }
+    .balloon.opened { width: 130px; height: 130px; font-size: 0.82rem; }
+    .cake { transform: scale(0.9); }
+  }
+
+  @media (max-width: 360px) {
+    .time-box .num { font-size: 1.3rem; }
+    .time-box .label { font-size: 0.45rem; }
+    .time-box { padding: 12px 2px 8px; }
   }
 </style>
 </head>
@@ -674,32 +693,8 @@ if (!esDiaCumple()) {
   setInterval(mostrarFrase, INTERVALO_FRASE);
 }
 
-/* ---------- CUENTA REGRESIVA CON EFECTO FLIP ---------- */
-let valoresPrevios = { dias: null, horas: null, min: null, seg: null };
-
+/* ---------- CUENTA REGRESIVA ---------- */
 function updateCountdown() {
   const contenedor = document.getElementById("countdown-container");
   const happy = document.getElementById("happy-msg");
-  const titulo = document.getElementById("titulo-countdown");
-
-  if (esDiaCumple()) {
-    contenedor.classList.add("hidden");
-    fraseEl.classList.add("hidden");
-    happy.classList.remove("hidden");
-    titulo.textContent = "Hoy es un día muy especial";
-    return;
-  }
-
-  const ahora = new Date();
-  const objetivo = proximoCumple();
-  const diff = objetivo - ahora;
-
-  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const min = Math.floor((diff / (1000 * 60)) % 60);
-  const seg = Math.floor((diff / 1000) % 60);
-
-  const valores = { dias, horas, min, seg };
-
-  // Renderizar cajas si no existen
-  if (!contenedor.dataset
+  const titulo = document.getElementById("titulo-c
