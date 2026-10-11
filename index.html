@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Cumpleaños Bubu 🎂</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  body {
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7, #c9a7eb);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #4a2c40;
+    overflow-x: hidden;
+  }
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  h1 { font-size: 2.5rem; margin-bottom: 20px; color: #b3005e; }
+  h2 { font-size: 2rem; margin-bottom: 25px; color: #b3005e; }
+
+  /* ---------- 1. CUENTA REGRESIVA ---------- */
+  #countdown-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .time-box {
+    background: rgba(255,255,255,0.7);
+    border-radius: 20px;
+    padding: 20px 25px;
+    min-width: 100px;
+    box-shadow: 0 8px 20px rgba(179,0,94,0.2);
+    backdrop-filter: blur(6px);
+  }
+  .time-box .num {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #b3005e;
+  }
+  .time-box .label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  #happy-msg {
+    font-size: 2.8rem;
+    color: #b3005e;
+    animation: pop 1s ease infinite alternate;
+  }
+  @keyframes pop {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+
+  /* ---------- IMAGEN BUBU Y DUDU ---------- */
+  .pareja-img {
+    width: 260px;
+    max-width: 80vw;
+    height: auto;
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(179,0,94,0.35);
+    margin: 15px auto;
+    display: block;
+    border: 5px solid rgba(255,255,255,0.85);
+    transition: transform 0.4s ease;
+    animation: flotar 3s ease-in-out infinite;
+  }
+  .pareja-img:hover { transform: scale(1.05) rotate(-2deg); }
+  @keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .pareja-grande { width: 340px; }
+
+  /* ---------- FRASES ROMÁNTICAS ---------- */
+  #frase-romantica {
+    margin-top: 35px;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #8a1a52;
+    max-width: 600px;
+    min-height: 60px;
+    padding: 0 20px;
+    transition: opacity 0.8s ease;
+    line-height: 1.5;
+  }
+  #frase-romantica.fade { opacity: 0; }
+
+  /* ---------- 6. MENSAJES SORPRESA ---------- */
+  #balloons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 700px;
+    margin-top: 20px;
+  }
+  .balloon {
+    width: 90px;
+    height: 110px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+    position: relative;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: #b3005e;
+    transform: translateX(-50%);
+  }
+  .balloon:hover { transform: scale(1.1) rotate(-3deg); }
+  .balloon.opened {
+    background: #fff !important;
+    color: #b3005e !important;
+    font-size: 0.85rem;
+    padding: 10px;
+    border-radius: 15px;
+    width: 140px;
+    height: 140px;
+  }
+
+  /* ---------- 7. QUIZ ---------- */
+  #quiz-box {
+    background: rgba(255,255,255,0.85);
+    border-radius: 25px;
+    padding: 30px;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(179,0,94,0.2);
+  }
+  #question { font-size: 1.3rem; margin-bottom: 20px; font-weight: 600; }
+  .option {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 2px solid #b3005e;
+    background: white;
+    color: #b3005e;
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .option:hover { background: #b3005e; color: white; }
+  .option.correct { background: #4caf50; color: white; border-color: #4caf50; }
+  .option.wrong { background: #e53935; color: white; border-color: #e53935; }
+  #quiz-feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
+
+  /* ---------- 8. PASTEL ---------- */
+  .cake {
+    position: relative;
+    width: 220px;
+    height: 180px;
+    margin: 40px auto 20px;
+  }
+  .plate {
+    position: absolute;
+    bottom: 0;
+    width: 260px;
+    height: 20px;
+    background: #d4a373;
+    border-radius: 50%;
+    left: -20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .layer {
+    position: absolute;
+    left: 10px;
+    width: 200px;
+    border-radius: 10px;
+    background: #f7b2c1;
+    box-shadow: inset 0 -8px 0 rgba(0,0,0,0.08);
+  }
+  .layer.bottom { bottom: 20px; height: 70px; background: #d98a9c; }
+  .layer.middle { bottom: 90px; height: 60px; background: #f7b2c1; width: 180px; left: 20px; }
+  .layer.top { bottom: 150px; height: 40px; background: #ffd1dc; width: 150px; left: 35px; }
+  .candle {
+    position: absolute;
+    bottom: 190px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 45px;
+    background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff6b9d 5px, #ff6b9d 10px);
+    border-radius: 4px;
+  }
+  .flame {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 28px;
+    background: radial-gradient(circle at 50% 70%, #fff700, #ff9500, #ff3d00);
+    border-radius: 50% 50% 20% 20%;
+    animation: flicker 0.4s infinite alternate;
+    box-shadow: 0 0 20px #ff9500;
+  }
+  @keyframes flicker {
+    from { transform: translateX(-50%) scale(1) rotate(-2deg); }
+    to { transform: translateX(-50%) scale(1.1) rotate(2deg); }
+  }
+  .flame.off { display: none; }
+  .smoke {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: rgba(150,150,150,0.6);
+    border-radius: 50%;
+    animation: smokeUp 2s ease-out forwards;
+  }
+  @keyframes smokeUp {
+    to { transform: translate(-50%, -60px) scale(3); opacity: 0; }
+  }
+  #blow-btn {
+    margin-top: 30px;
+    padding: 15px 35px;
+    border: none;
+    background: #b3005e;
+    color: white;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(179,0,94,0.4);
+    transition: transform 0.2s;
+  }
+  #blow-btn:hover { transform: scale(1.05); }
+  #wish-msg {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #b3005e;
+    font-weight: bold;
+    min-height: 30px;
+  }
+
+  /* ---------- CONTROL DE VISIBILIDAD ---------- */
+  .hidden { display: none !important; }
+
+  /* ---------- BOTÓN MÚSICA ---------- */
+  #music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(179,0,94,0.9);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(179,0,94,0.5);
+    transition: transform 0.2s, background 0.3s;
+  }
+  #music-btn:hover { transform: scale(1.1); }
+  #music-btn.playing {
+    animation: pulso 1.5s infinite;
+  }
+  @keyframes pulso {
+    0%, 100% { box-shadow: 0 6px 18px rgba(179,0,94,0.5); }
+    50% { box-shadow: 0 6px 25px rgba(179,0,94,0.9); }
+  }
+</style>
+</head>
+<body>
+
+<!-- 🎵 BOTÓN DE MÚSICA FLOTANTE -->
+<button id="music-btn" title="Poner/quitar música">🔇</button>
+
+<!-- 🎵 AUDIO DE FONDO (reemplaza el src por tu canción) -->
+<audio id="musica" loop>
+  <!-- Puedes usar un link directo a un mp3, o subir tu archivo y poner: src="musica.mp3" -->
+  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_5d6c6c8b26.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 1. CUENTA REGRESIVA -->
+<section id="sec-countdown">
+  <!-- 🖼️ IMAGEN BUBU Y DUDU -->
+  <img id="img-pareja" class="pareja-img" 
+       src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=600&q=80" 
+       alt="Bubu y Dudu de cumpleaños">
+  <h1 id="titulo-countdown">💖 Cuenta regresiva para el cumple de Bubu 💖</h1>
+  <div id="countdown-container"></div>
+  <div id="happy-msg" class="hidden">🎉 ¡FELIZ CUMPLEAÑOS BUBU! 🎉</div>
+  <div id="frase-romantica"></div>
+</section>
+
+<!-- 6. MENSAJES SORPRESA -->
+<section id="sec-balloons" class="hidden">
+  <img class="pareja-img pareja-grande"
+       src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=600&q=80"
+       alt="Bubu y Dudu festejando">
+  <h2>🎈 Toca cada globo para descubrir un mensaje 🎈</h2>
+  <div id="balloons"></div>
+</section>
+
+<!-- 7. QUIZ -->
+<section id="sec-quiz" class="hidden">
+  <h2>💘 ¿Cuánto te acuerdas de nosotros? 💘</h2>
+  <div id="quiz-box">
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="quiz-feedback"></div>
+    <div id="quiz-progress" style="margin-top:10px; font-size:0.9rem;"></div>
+  </div>
+</section>
+
+<!-- 8. PASTEL -->
+<section id="sec-cake" class="hidden">
+  <h2>🎂 Pide un deseo y sopla las velas 🎂</h2>
+  <div class="cake">
+    <div class="plate"></div>
+    <div class="layer bottom"></div>
+    <div class="layer middle"></div>
+    <div class="layer top"></div>
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+    </div>
+  </div>
+  <button id="blow-btn">¡Soplar velita! 💨</button>
+  <div id="wish-msg"></div>
+</section>
+
+<script>
+/* ================== CONFIGURACIÓN (EDITA AQUÍ) ================== */
+const NOMBRE = "Bubu";
+const MES_CUMPLE = 9;   // octubre (0=enero, 9=octubre)
+const DIA_CUMPLE = 29;
+
+// 🖼️ URL de la imagen de Bubu y Dudu (¡reemplázala por una tuya!)
+// Para usar una foto tuya: sube la imagen junto al HTML y pon src="foto.jpg"
+const IMG_PAREJA = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=600&q=80";
+
+// 🎵 Música de fondo
+// Puedes usar un link directo a mp3, o subir tu canción junto al HTML y poner src="cancion.mp3"
+const MUSICA_URL = "https://cdn.pixabay.com/audio/2022/10/25/audio_5d6c6c8b26.mp3";
+
+// 💌 Frases románticas que rotan en la cuenta regresiva
+const FRASES = [
+  "Cada segundo que pasa me acerca a verte sonreír 💕",
+  "Eres lo mejor que me ha pasado, Bubu 🌸",
+  "Contarte los días es mi forma de decirte que te extraño 💌",
+  "Falta poquito para celebrarte como te mereces 🎁",
+  "Mi lugar favorito siempre va a ser a tu lado 🏡",
+  "No hay distancia ni tiempo que borre lo que siento por ti ✨",
+  "Ya quiero ver tu carita cuando veas la sorpresa 😏",
+  "Los días contigo son mis favoritos, y este será especial 🎂"
+];
+const INTERVALO_FRASE = 5000;
+
+// Mensajes sorpresa de los globos
+const MENSAJES = [
+  "Eres mi persona favorita en el mundo 💕",
+  "Amo tu risa, nunca la cambies 😍",
+  "Contigo hasta lo aburrido es divertido 🥰",
+  "Gracias por existir, Bubu 🌸",
+  "Eres mi lugar seguro 🏡",
+  "Cada día a tu lado es mi regalo 🎁"
+];
+const COLORES = ["#ff6b9d", "#f9a8d4", "#c084fc", "#f472b6", "#a78bfa", "#fb7185"];
+
+// Preguntas del quiz
+const PREGUNTAS = [
+  { q: "¿Dónde fue nuestra primera cita?", opciones: ["Cine", "Café", "Parque", "Restaurante"], correcta: 1 },
+  { q: "¿Cuál es mi comida favorita para compartir contigo?", opciones: ["Pizza", "Sushi", "Helado", "Tacos"], correcta: 0 },
+  { q: "¿Qué canción te dediqué?", opciones: ["Perfect", "Yellow", "Dandelions", "Todas las anteriores"], correcta: 3 },
+  { q: "¿Qué es lo que más amo de ti?", opciones: ["Tu sonrisa", "Tu forma de ser", "Tu mirada", "Todo lo anterior"], correcta: 3 }
+];
+/* ================================================================ */
+
+/* ---------- APLICAR IMAGEN Y MÚSICA DESDE CONFIG ---------- */
+document.querySelectorAll(".pareja-img").forEach(img => img.src = IMG_PAREJA);
+document.querySelector("#musica source").src = MUSICA_URL;
+
+/* ---------- BOTÓN DE MÚSICA ---------- */
+const musica = document.getElementById("musica");
+const musicBtn = document.getElementById("music-btn");
+
+musicBtn.addEventListener("click", () => {
+  if (musica.paused) {
+    musica.play().then(() => {
+      musicBtn.textContent = "🔊";
+      musicBtn.classList.add("playing");
+    }).catch(() => {
+      musicBtn.textContent = "⚠️";
+    });
+  } else {
+    musica.pause();
+    musicBtn.textContent = "🔇";
+    musicBtn.classList.remove("playing");
+  }
+});
+
+// Intentar reproducir automáticamente al primer clic en cualquier parte
+let primerClic = false;
+document.body.addEventListener("click", () => {
+  if (!primerClic && musica.paused) {
+    primerClic = true;
+    musica.play().then(() => {
+      musicBtn.textContent = "🔊";
+      musicBtn.classList.add("playing");
+    }).catch(() => {});
+  }
+}, { once: false });
+
+/* ---------- UTILIDADES DE FECHA ---------- */
+function esDiaCumple() {
+  const hoy = new Date();
+  return hoy.getMonth() === MES_CUMPLE && hoy.getDate() === DIA_CUMPLE;
+}
+
+function proximoCumple() {
+  const hoy = new Date();
+  let objetivo = new Date(hoy.getFullYear(), MES_CUMPLE, DIA_CUMPLE, 0, 0, 0);
+  if (hoy > objetivo && !esDiaCumple()) {
+    objetivo.setFullYear(hoy.getFullYear() + 1);
+  }
+  return objetivo;
+}
+
+/* ---------- FRASES ROMÁNTICAS ---------- */
+let fraseIdx = 0;
+const fraseEl = document.getElementById("frase-romantica");
+function mostrarFrase() {
+  fraseEl.classList.add("fade");
+  setTimeout(() => {
+    fraseEl.textContent = FRASES[fraseIdx];
+    fraseIdx = (fraseIdx + 1) % FRASES.length;
+    fraseEl.classList.remove("fade");
+  }, 800);
+}
+if (!esDiaCumple()) {
+  mostrarFrase();
+  setInterval(mostrarFrase, INTERVALO_FRASE);
+}
+
+/* ---------- 1. CUENTA REGRESIVA ---------- */
+function updateCountdown() {
+  const contenedor = document.getElementById("countdown-container");
+  const happy = document.getElementById("happy-msg");
+  const titulo = document.getElementById("titulo-countdown");
+
+  if (esDiaCumple()) {
+    contenedor.classList.add("hidden");
+    fraseEl.classList.add("hidden");
+    happy.classList.remove("hidden");
+    titulo.textContent = "🎂 Hoy es un día muy especial 🎂";
+    return;
+  }
+
+  const ahora = new Date();
+  const objetivo = proximoCumple();
+  const diff = objetivo - ahora;
+
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const min = Math.floor((diff / (1000 * 60)) % 60);
+  const seg = Math.floor((diff / 1000) % 60);
+
+  contenedor.innerHTML = `
+    <div class="time-box"><div class="num">${dias}</div><div class="label">Días</div></div>
+    <div class="time-box"><div class="num">${horas}</div><div class="label">Horas</div></div>
+    <div class="time-box"><div class="num">${min}</div><div class="label">Min</div></div>
+    <div class="time-box"><div class="num">${seg}</div><div class="label">Seg</div></div>
+  `;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ---------- DESBLOQUEO DE SECCIONES ---------- */
+function desbloquearSecciones() {
+  if (esDiaCumple()) {
+    document.getElementById("sec-balloons").classList.remove("hidden");
+    document.getElementById("sec-quiz").classList.remove("hidden");
+    document.getElementById("sec-cake").classList.remove("hidden");
+  }
+}
+desbloquearSecciones();
+
+/* ---------- 6. MENSAJES SORPRESA ---------- */
+const balloonsContainer = document.getElementById("balloons");
+MENSAJES.forEach((msg, i) => {
+  const b = document.createElement("div");
+  b.className = "balloon";
+  b.style.background = COLORES[i % COLORES.length];
+  b.textContent = "?";
+  b.addEventListener("click", () => {
+    if (!b.classList.contains("opened")) {
+      b.classList.add("opened");
+      b.textContent = msg;
+    }
+  });
+  balloonsContainer.appendChild(b);
+});
+
+/* ---------- 7. QUIZ ---------- */
+let idx = 0;
+let puntaje = 0;
+const qEl = document.getElementById("question");
+const optEl = document.getElementById("options");
+const fbEl = document.getElementById("quiz-feedback");
+const progEl = document.getElementById("quiz-progress");
+
+function cargarPregunta() {
+  if (idx >= PREGUNTAS.length) {
+    qEl.textContent = `🎉 ¡Terminaste! Acertaste ${puntaje} de ${PREGUNTAS.length}`;
+    optEl.innerHTML = "";
+    fbEl.textContent = puntaje === PREGUNTAS.length
+      ? "¡Me conoces perfecto, te amo! 💖"
+      : "Igual te amo, aunque falles 😘";
+    progEl.textContent = "";
+    return;
+  }
+  const p = PREGUNTAS[idx];
+  qEl.textContent = p.q;
+  optEl.innerHTML = "";
+  fbEl.textContent = "";
+  progEl.textContent = `Pregunta ${idx + 1} de ${PREGUNTAS.length}`;
+  p.opciones.forEach((op, i) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = op;
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".option").forEach(b => b.disabled = true);
+      if (i === p.correcta) {
+        btn.classList.add("correct");
+        fbEl.textContent = "¡Correcto! 💕";
+        puntaje++;
+      } else {
+        btn.classList.add("wrong");
+        document.querySelectorAll(".option")[p.correcta].classList.add("correct");
+        fbEl.textContent = "Ups, era la otra 😅";
+      }
+      setTimeout(() => { idx++; cargarPregunta(); }, 1300);
+    });
+    optEl.appendChild(btn);
+  });
+}
+cargarPregunta();
+
+/* ---------- 8. PASTEL ---------- */
+const flame = document.getElementById("flame");
+const blowBtn = document.getElementById("blow-btn");
+const wishMsg = document.getElementById("wish-msg");
+const candle = document.querySelector(".candle");
+let apagada = false;
+
+blowBtn.addEventListener("click", () => {
+  if (apagada) return;
+  apagada = true;
+  flame.classList.add("off");
+
+  const smoke = document.createElement("div");
+  smoke.className = "smoke";
+  candle.appendChild(smoke);
+
+  wishMsg.textContent = "✨ ¡Deseo pedido! Que se cumpla todo lo que deseas, Bubu ✨";
+  lanzarConfeti();
+  blowBtn.textContent = "¡Feliz cumpleaños! 🎉";
+});
+
+/* Confeti */
+function lanzarConfeti() {
+  const canvas = document.createElement("canvas");
+  canvas.style.position = "fixed";
+  canvas.style.top = 0;
+  canvas.style.left = 0;
+  canvas.style.width = "100%";
+  canvas.style.height = "100%";
+  canvas.style.pointerEvents = "none";
+  canvas.style.zIndex = 9999;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const piezas = [];
+  const colores = ["#ff6b9d", "#f9a8d4", "#c084fc", "#fbbf24", "#34d399", "#60a5fa"];
+  for (let i = 0; i < 150; i++) {
+    piezas.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height,
+      w: Math.random() * 10 + 5,
+      h: Math.random() * 6 + 4,
+      color: colores[Math.floor(Math.random() * colores.length)],
+      vy: Math.random() * 3 + 2,
+      vx: Math.random() * 2 - 1,
+      rot: Math.random() * 360,
+      vrot: Math.random() * 6 - 3
+    });
+  }
+
+  let frames = 0;
+  function animar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    piezas.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.rot += p.vrot;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    frames++;
+    if (frames < 300) requestAnimationFrame(animar);
+    else canvas.remove();
+  }
+  animar();
+}
+</script>
+</body>
+</html>
