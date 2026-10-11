@@ -697,4 +697,187 @@ if (!esDiaCumple()) {
 function updateCountdown() {
   const contenedor = document.getElementById("countdown-container");
   const happy = document.getElementById("happy-msg");
-  const titulo = document.getElementById("titulo-c
+  const titulo = document.getElementById("titulo-countdown");
+
+  if (esDiaCumple()) {
+    contenedor.classList.add("hidden");
+    fraseEl.classList.add("hidden");
+    happy.classList.remove("hidden");
+    titulo.textContent = "Hoy es un día muy especial";
+    return;
+  }
+
+  const ahora = new Date();
+  const objetivo = proximoCumple();
+  const diff = objetivo - ahora;
+
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const min = Math.floor((diff / (1000 * 60)) % 60);
+  const seg = Math.floor((diff / 1000) % 60);
+
+  const valores = { dias, horas, min, seg };
+
+  if (!contenedor.dataset.init) {
+    contenedor.dataset.init = "1";
+    contenedor.innerHTML = `
+      <div class="time-box"><span class="num" data-key="dias">0</span><span class="label">Días</span></div>
+      <div class="time-box"><span class="num" data-key="horas">0</span><span class="label">Horas</span></div>
+      <div class="time-box"><span class="num" data-key="min">0</span><span class="label">Min</span></div>
+      <div class="time-box"><span class="num" data-key="seg">0</span><span class="label">Seg</span></div>
+    `;
+  }
+
+  Object.keys(valores).forEach(key => {
+    const el = contenedor.querySelector(`[data-key="${key}"]`);
+    const nuevo = String(valores[key]).padStart(2, "0");
+    if (el.textContent !== nuevo) {
+      el.textContent = nuevo;
+      el.classList.remove("enter");
+      void el.offsetWidth;
+      el.classList.add("enter");
+    }
+  });
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ---------- DESBLOQUEO ---------- */
+if (esDiaCumple()) {
+  document.getElementById("sec-balloons").classList.remove("hidden");
+  document.getElementById("sec-quiz").classList.remove("hidden");
+  document.getElementById("sec-cake").classList.remove("hidden");
+}
+
+/* ---------- GLOBOS ---------- */
+const balloonsContainer = document.getElementById("balloons");
+MENSAJES.forEach((msg, i) => {
+  const b = document.createElement("div");
+  b.className = "balloon";
+  b.style.background = `linear-gradient(160deg, ${COLORES[i % COLORES.length]}, ${COLORES[(i+1) % COLORES.length]})`;
+  b.textContent = "?";
+  b.addEventListener("click", () => {
+    if (!b.classList.contains("opened")) {
+      b.classList.add("opened");
+      b.textContent = msg;
+    }
+  });
+  balloonsContainer.appendChild(b);
+});
+
+/* ---------- QUIZ ---------- */
+let idx = 0;
+let puntaje = 0;
+const qEl = document.getElementById("question");
+const optEl = document.getElementById("options");
+const fbEl = document.getElementById("quiz-feedback");
+const progEl = document.getElementById("quiz-progress");
+
+function cargarPregunta() {
+  if (idx >= PREGUNTAS.length) {
+    qEl.textContent = `¡Terminaste! Acertaste ${puntaje} de ${PREGUNTAS.length}`;
+    optEl.innerHTML = "";
+    fbEl.textContent = puntaje === PREGUNTAS.length
+      ? "¡Me conoces perfecto, te amo! 💖"
+      : "Igual te amo, aunque falles 😘";
+    progEl.textContent = "";
+    return;
+  }
+  const p = PREGUNTAS[idx];
+  qEl.textContent = p.q;
+  optEl.innerHTML = "";
+  fbEl.textContent = "";
+  progEl.textContent = `Pregunta ${idx + 1} de ${PREGUNTAS.length}`;
+  p.opciones.forEach((op, i) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = op;
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".option").forEach(b => b.disabled = true);
+      if (i === p.correcta) {
+        btn.classList.add("correct");
+        fbEl.textContent = "¡Correcto! 💕";
+        puntaje++;
+      } else {
+        btn.classList.add("wrong");
+        document.querySelectorAll(".option")[p.correcta].classList.add("correct");
+        fbEl.textContent = "Ups, era la otra 😅";
+      }
+      setTimeout(() => { idx++; cargarPregunta(); }, 1300);
+    });
+    optEl.appendChild(btn);
+  });
+}
+cargarPregunta();
+
+/* ---------- PASTEL ---------- */
+const flame = document.getElementById("flame");
+const blowBtn = document.getElementById("blow-btn");
+const wishMsg = document.getElementById("wish-msg");
+const candle = document.querySelector(".candle");
+let apagada = false;
+
+blowBtn.addEventListener("click", () => {
+  if (apagada) return;
+  apagada = true;
+  flame.classList.add("off");
+  const smoke = document.createElement("div");
+  smoke.className = "smoke";
+  candle.appendChild(smoke);
+  wishMsg.textContent = "✨ ¡Deseo pedido! Que se cumpla todo lo que deseas ✨";
+  lanzarConfeti();
+  blowBtn.textContent = "¡Feliz cumpleaños! 🎉";
+});
+
+/* ---------- CONFETI ---------- */
+function lanzarConfeti() {
+  const canvas = document.createElement("canvas");
+  Object.assign(canvas.style, {
+    position: "fixed", top: 0, left: 0,
+    width: "100%", height: "100%",
+    pointerEvents: "none", zIndex: 9999
+  });
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const piezas = [];
+  const colores = ["#6d1b3c", "#d67b9c", "#c9a86a", "#f3c9d6", "#b94e6f", "#e8b4c8"];
+  for (let i = 0; i < 150; i++) {
+    piezas.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height,
+      w: Math.random() * 10 + 5,
+      h: Math.random() * 6 + 4,
+      color: colores[Math.floor(Math.random() * colores.length)],
+      vy: Math.random() * 3 + 2,
+      vx: Math.random() * 2 - 1,
+      rot: Math.random() * 360,
+      vrot: Math.random() * 6 - 3
+    });
+  }
+
+  let frames = 0;
+  function animar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    piezas.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.rot += p.vrot;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    frames++;
+    if (frames < 300) requestAnimationFrame(animar);
+    else canvas.remove();
+  }
+  animar();
+}
+</script>
+</body>
+</html>
