@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#3e0d20">
+<meta name="theme-color" content="#12081f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bubu">
 <title>Feliz Cumpleaños Bubu 🎂</title>
 <script>
 /* Paletas: 1 Borgoña y champagne · 2 Atardecer coral · 3 Noche de estrellas (activa). Probar otra: ?tema=1|2 */
@@ -852,6 +858,65 @@ document.documentElement.dataset.tema = TEMA;
     opacity: .85;
   }
 
+  /* ---------- EXTRAS, LIBRO, ÁLBUM, TOAST ---------- */
+  #toast {
+    position: fixed; left: 50%; bottom: 26px;
+    transform: translate(-50%, 30px);
+    z-index: 9000;
+    max-width: min(440px, 90vw);
+    background: var(--vino-oscuro); color: #fff;
+    border: 1px solid var(--borde-vidrio);
+    padding: 12px 20px; border-radius: 30px;
+    font-size: .92rem; text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s, transform .35s;
+  }
+  #toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  .lluvia {
+    position: fixed; top: -60px; z-index: 9998;
+    pointer-events: none;
+    animation: caer linear forwards;
+  }
+  @keyframes caer { to { transform: translateY(120vh) rotate(360deg); } }
+
+  .libro-form { width: 100%; max-width: 480px; text-align: left; }
+  .libro-form label { display: block; font-size: .8rem; letter-spacing: 1px; text-transform: uppercase; color: var(--rosa-texto); margin-bottom: 8px; font-weight: 500; }
+  .libro-form textarea {
+    width: 100%; min-height: 130px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 2px solid var(--borde-op);
+    background: var(--opcion);
+    color: var(--titulo);
+    font-family: 'Poppins', sans-serif; font-size: 1rem; line-height: 1.5;
+    resize: vertical;
+  }
+  .libro-form textarea::placeholder { color: var(--rosa-texto); opacity: .8; }
+  .libro-form .fila { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  #libro-guardados { list-style: none; margin-top: 22px; display: grid; gap: 10px; text-align: left; width: 100%; max-width: 480px; }
+  #libro-guardados li {
+    background: var(--vidrio); border: 1px solid var(--borde-vidrio);
+    border-radius: 14px; padding: 12px 16px;
+    font-size: .92rem; line-height: 1.5; white-space: pre-line;
+  }
+  #libro-guardados time { display: block; font-size: .7rem; color: var(--rosa-texto); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+  #album-lista { display: grid; gap: 14px; width: 100%; max-width: 480px; }
+  .cupon.bloq { filter: grayscale(.7); opacity: .75; }
+  .cupon.usado { opacity: .7; }
+  .cupon .canjear {
+    margin-top: 10px;
+    border: none; border-radius: 30px;
+    padding: 8px 18px;
+    background: var(--vino); color: #fff;
+    font-weight: 600; font-size: .85rem; cursor: pointer;
+  }
+  .cupon .canjear:disabled { background: #8a6d2f; cursor: default; }
+
+  .btn-compartir { margin-top: 14px; }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 600px) {
     section { padding: 56px 14px; }
@@ -1012,9 +1077,44 @@ document.documentElement.dataset.tema = TEMA;
     </div>
   </section>
 
+  <section id="sec-libro">
+    <p class="kicker reveal">✦ Tu turno ✦</p>
+    <h2 class="reveal">💌 Déjame un mensaje</h2>
+    <p class="sub reveal">Lo que quieras decirme. Me llega a mí, y aquí queda guardado para ti.</p>
+    <form class="libro-form reveal" id="libro-form">
+      <label for="libro-texto">Tu mensaje</label>
+      <textarea id="libro-texto" maxlength="800" placeholder="Escríbeme algo bonito (o algo travieso 😏)…" required></textarea>
+      <div class="fila">
+        <button class="btn" type="submit" id="libro-enviar">Enviar 💌</button>
+      </div>
+    </form>
+    <ul id="libro-guardados" aria-label="Mensajes guardados"></ul>
+  </section>
+
+  <section id="sec-album">
+    <p class="kicker reveal">✦ Para todo el año ✦</p>
+    <h2 class="reveal">🎟️ Tus cupones</h2>
+    <p class="sub reveal" id="album-sub">Se ganan acertando todo el quiz. Después se canjean cuando quieras.</p>
+    <div id="album-lista" class="reveal"></div>
+  </section>
+
 </div>
 
+<!-- EXTRAS: instalar y recordatorio -->
+<section id="sec-extras" class="compacta">
+  <p class="kicker reveal">✦ Llévame contigo ✦</p>
+  <h2 class="reveal" style="font-size:1.6rem">Para que no se te pase</h2>
+  <p class="sub reveal">Instálala como app y agenda un aviso en tu calendario.</p>
+  <div class="acciones reveal">
+    <button class="btn" id="btn-instalar">📲 Instalar como app</button>
+    <button class="btn suave" id="btn-calendario">🗓️ Recordatorio en mi calendario</button>
+  </div>
+  <p class="sub" id="instalar-ayuda" style="margin:14px auto 0" aria-live="polite"></p>
+</section>
+
 <footer>Hecho con 💕 para Bubu</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
 
 <div id="preview-banner" class="hidden"></div>
 
@@ -1034,6 +1134,15 @@ const ANIVERSARIO = "2024-01-01";
 
 // Foto para el círculo principal (ej. "fotos/nosotros.jpg"). Vacío = muestra los ositos.
 const IMG_PAREJA = "";
+
+// Libro de visitas y canjes: el mensaje llega por el primer canal que configures.
+//   1) LIBRO_ENDPOINT: URL de Formspree (https://formspree.io/f/xxxx) -> te llega al correo sin abrir nada
+//   2) LIBRO_WHATSAPP: tu número con lada, solo dígitos (ej. "5215512345678") -> abre WhatsApp con el texto
+//   3) LIBRO_CORREO: tu correo -> abre su app de correo con el texto
+// Si los dejas vacíos, el mensaje solo se guarda en su dispositivo.
+const LIBRO_ENDPOINT = "";
+const LIBRO_WHATSAPP = "";
+const LIBRO_CORREO = "";
 
 // Música: primero intenta "musica.mp3" junto al index.html; si no existe usa esta URL.
 const MUSICA_URL = "https://cdn.pixabay.com/audio/2022/10/25/audio_5d6c6c8b26.mp3";
@@ -1530,6 +1639,8 @@ function terminarQuiz() {
       `<div class="cupon" style="animation-delay:${i * .25}s"><span class="k">Cupón de amor</span><strong>${c.titulo}</strong><small style="display:block;opacity:.75">${c.nota}</small></div>`
     ).join("")}</div>`;
     lanzarConfeti(180);
+    LS.set("cupones", true);
+    renderAlbum();
   } else {
     fbEl.textContent = "Casi… pero el premio es solo para quien acierta todas 😏";
     const b = document.createElement("button");
@@ -1538,6 +1649,11 @@ function terminarQuiz() {
     b.addEventListener("click", () => { idx = 0; puntaje = 0; cargarPregunta(); });
     finEl.appendChild(b);
   }
+  finEl.appendChild(botonCompartir(() => ({
+    titulo: `Acerté ${puntaje} de ${PREGUNTAS.length}`,
+    texto: perfecto ? "Me sé nuestra historia de memoria 💖" : "Y aun así me quiere 😘",
+    pie: `Para ${NOMBRE} · ${fechaCorta(INICIO)} de ${ANIO_CUMPLE}`
+  })));
 }
 cargarPregunta();
 
@@ -1560,6 +1676,11 @@ function apagarVela() {
   micBtn.disabled = blowBtn.disabled = true;
   blowBtn.textContent = "¡Feliz cumpleaños! 🎉";
   lanzarConfeti(200);
+  wishMsg.insertAdjacentElement("afterend", botonCompartir(() => ({
+    titulo: "Pedí mi deseo 🕯️",
+    texto: "Lo soplé con todo el corazón. Ya veremos si se cumple 😉",
+    pie: `Para ${NOMBRE} · ${fechaCorta(INICIO)} de ${ANIO_CUMPLE}`
+  })));
 }
 
 function detenerMic() {
@@ -1651,6 +1772,305 @@ $("plan").innerHTML = PLAN.map(p =>
 })();
 
 document.querySelector('meta[name="theme-color"]').content = PALETA.vars["--meta"];
+
+/* ============================================================
+   EXPERIENCIA Y PULIDO
+   ============================================================ */
+const LS = {
+  get(k, def) { try { const v = localStorage.getItem("bubu_" + k); return v === null ? def : JSON.parse(v); } catch (e) { return def; } },
+  set(k, v) { try { localStorage.setItem("bubu_" + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ---------- toast ---------- */
+let toastT = null;
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("show"), 3600);
+}
+
+/* ---------- easter eggs ---------- */
+function lluvia(lista, n = 36) {
+  if (REDUCIR) return;
+  for (let i = 0; i < n; i++) {
+    const e = document.createElement("span");
+    e.className = "lluvia";
+    e.textContent = lista[i % lista.length];
+    e.setAttribute("aria-hidden", "true");
+    e.style.left = Math.random() * 100 + "vw";
+    e.style.fontSize = 18 + Math.random() * 26 + "px";
+    e.style.animationDuration = 2.5 + Math.random() * 2.5 + "s";
+    e.style.animationDelay = Math.random() * 1.2 + "s";
+    e.addEventListener("animationend", () => e.remove());
+    document.body.appendChild(e);
+  }
+}
+let taps = [];
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#retrato")) return;
+  const t = Date.now();
+  taps = taps.filter(x => t - x < 3000).concat(t);
+  if (taps.length >= 7) {
+    taps = [];
+    lluvia(["🐻", "🐼", "💕", "🍯"]);
+    toast("🐻 Bubu y Dudu te mandan un abrazo enorme 🐼");
+  }
+});
+let teclas = "";
+document.addEventListener("keydown", (e) => {
+  if (e.target.closest("textarea, input")) return;
+  if (e.key.length !== 1) return;
+  teclas = (teclas + e.key.toLowerCase()).slice(-8);
+  if (teclas.endsWith("teamo")) {
+    teclas = "";
+    lluvia(["💖", "💘", "💗", "💕", "✨"]);
+    toast("Yo más 💖");
+  }
+});
+
+/* ---------- compartir imagen ---------- */
+async function crearTarjeta({ titulo, texto, pie }) {
+  try { await document.fonts.ready; } catch (e) {}
+  const W = 1080, H = 1350;
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  const v = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  const g = x.createLinearGradient(0, 0, W, H);
+  ["--bg1", "--bg2", "--bg3", "--bg4"].forEach((n, i) => g.addColorStop(i / 3, v(n)));
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+
+  // estrellitas fijas
+  x.fillStyle = v("--dorado");
+  for (let i = 0; i < 38; i++) {
+    const px = (i * 241) % W, py = (i * 397) % H, r = 2 + (i % 4);
+    x.globalAlpha = .25 + (i % 5) * .1;
+    x.beginPath(); x.arc(px, py, r, 0, 7); x.fill();
+  }
+  x.globalAlpha = 1;
+
+  // marco
+  x.strokeStyle = v("--dorado"); x.lineWidth = 5;
+  x.strokeRect(54, 54, W - 108, H - 108);
+  x.globalAlpha = .45; x.lineWidth = 2; x.strokeRect(74, 74, W - 148, H - 148); x.globalAlpha = 1;
+
+  x.textAlign = "center";
+  x.font = "220px serif";
+  x.fillStyle = "#000";
+  x.fillText("🐻🐼", W / 2, 400);
+
+  const envolver = (txt, ancho, fuente, color, y, alto) => {
+    x.font = fuente; x.fillStyle = color;
+    const lineas = [];
+    let linea = "";
+    txt.split(" ").forEach(p => {
+      const prueba = linea ? linea + " " + p : p;
+      if (x.measureText(prueba).width > ancho && linea) { lineas.push(linea); linea = p; } else linea = prueba;
+    });
+    lineas.push(linea);
+    lineas.forEach((l, i) => x.fillText(l, W / 2, y + i * alto));
+    return y + lineas.length * alto;
+  };
+  let y = envolver(titulo, 820, '700 92px "Playfair Display", serif', v("--titulo"), 600, 112);
+  y = envolver(texto, 780, 'italic 600 54px "Playfair Display", serif', v("--texto"), y + 50, 74);
+  x.font = "500 38px Poppins, sans-serif";
+  x.fillStyle = v("--rosa-texto");
+  x.fillText(pie, W / 2, H - 140);
+  return c;
+}
+async function compartirTarjeta(datos) {
+  const c = await crearTarjeta(datos);
+  const blob = await new Promise(r => c.toBlob(r, "image/png"));
+  const file = new File([blob], "recuerdo-de-cumple.png", { type: "image/png" });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: "Mi cumpleaños 🎂", text: datos.titulo });
+      return;
+    } catch (e) { if (e.name === "AbortError") return; }
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "recuerdo-de-cumple.png";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast("Imagen guardada 📸");
+}
+function botonCompartir(datosFn) {
+  const b = document.createElement("button");
+  b.className = "btn suave btn-compartir";
+  b.textContent = "Guardar o compartir 📸";
+  b.addEventListener("click", async () => {
+    b.disabled = true;
+    try { await compartirTarjeta(datosFn()); } finally { b.disabled = false; }
+  });
+  return b;
+}
+
+/* ---------- canal de mensajes (libro de visitas y canjes) ---------- */
+async function enviarPorCanal(texto) {
+  if (LIBRO_ENDPOINT) {
+    try {
+      const r = await fetch(LIBRO_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ mensaje: texto, de: NOMBRE })
+      });
+      return r.ok ? "enviado" : "error";
+    } catch (e) { return "error"; }
+  }
+  if (LIBRO_WHATSAPP) {
+    window.open(`https://wa.me/${LIBRO_WHATSAPP}?text=${encodeURIComponent(texto)}`, "_blank", "noopener");
+    return "abierto";
+  }
+  if (LIBRO_CORREO) {
+    location.href = `mailto:${LIBRO_CORREO}?subject=${encodeURIComponent("Un mensaje desde tu página 💌")}&body=${encodeURIComponent(texto)}`;
+    return "abierto";
+  }
+  return "local";
+}
+const AVISO_CANAL = {
+  enviado: "Mensaje enviado 💌",
+  abierto: "Se abrió la app para enviarlo 💌",
+  local: "Guardado en este dispositivo 💌",
+  error: "No se pudo enviar. Inténtalo de nuevo 🙏"
+};
+
+/* ---------- libro de visitas ---------- */
+function renderLibro() {
+  const lista = $("libro-guardados");
+  const msgs = LS.get("libro", []);
+  lista.innerHTML = "";
+  msgs.slice().reverse().forEach(m => {
+    const li = document.createElement("li");
+    const t = document.createElement("time");
+    t.textContent = new Date(m.f).toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
+    li.append(t, document.createTextNode(m.t));
+    lista.appendChild(li);
+  });
+}
+$("libro-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const ta = $("libro-texto");
+  const texto = ta.value.trim();
+  if (!texto) return;
+  const btn = $("libro-enviar");
+  btn.disabled = true;
+  const res = await enviarPorCanal(`💌 Mensaje para ti:\n\n${texto}`);
+  if (res !== "error") {
+    LS.set("libro", LS.get("libro", []).concat({ t: texto, f: Date.now() }));
+    ta.value = "";
+    renderLibro();
+    lanzarConfeti(40);
+  }
+  toast(AVISO_CANAL[res]);
+  btn.disabled = false;
+});
+renderLibro();
+
+/* ---------- cupones (álbum para todo el año) ---------- */
+function renderAlbum() {
+  const cont = $("album-lista");
+  const ganados = LS.get("cupones", false);
+  const usados = LS.get("canjes", {});
+  cont.innerHTML = "";
+  $("album-sub").textContent = ganados
+    ? "Siguen vigentes todo el año. Canjéalos cuando quieras 🎁"
+    : "Se ganan acertando todo el quiz. Después se canjean cuando quieras.";
+  CUPONES.forEach((c, i) => {
+    const d = document.createElement("div");
+    d.className = "cupon" + (ganados ? "" : " bloq") + (usados[i] ? " usado" : "");
+    const k = document.createElement("span");
+    k.className = "k";
+    k.textContent = "Cupón de amor";
+    const t = document.createElement("strong");
+    t.textContent = ganados ? c.titulo : "🔒 Cupón sorpresa";
+    const n = document.createElement("small");
+    n.style.cssText = "display:block;opacity:.75";
+    n.textContent = ganados ? c.nota : "Acierta todo el quiz para desbloquearlo";
+    d.append(k, t, n);
+    if (ganados) {
+      const b = document.createElement("button");
+      b.className = "canjear";
+      if (usados[i]) {
+        b.disabled = true;
+        b.textContent = "Canjeado el " + new Date(usados[i]).toLocaleDateString("es-MX", { day: "numeric", month: "short" });
+      } else {
+        b.textContent = "Canjear 🎟️";
+        b.addEventListener("click", async () => {
+          const u = LS.get("canjes", {});
+          u[i] = Date.now();
+          LS.set("canjes", u);
+          renderAlbum();
+          lanzarConfeti(60);
+          const res = await enviarPorCanal(`🎟️ ¡Canjeé mi cupón!\n\n${c.titulo}`);
+          toast(res === "local" ? "Canjeado. Enséñale esta pantalla 😉" : AVISO_CANAL[res]);
+        });
+      }
+      d.appendChild(b);
+    }
+    cont.appendChild(d);
+  });
+}
+renderAlbum();
+
+/* ---------- recordatorio en el calendario (.ics) ---------- */
+function descargarIcs() {
+  const pad = (n) => String(n).padStart(2, "0");
+  const f = `${ANIO_CUMPLE}${pad(MES_CUMPLE + 1)}${pad(DIA_CUMPLE)}`;
+  const sig = new Date(ANIO_CUMPLE, MES_CUMPLE, DIA_CUMPLE + 1);
+  const fsig = `${sig.getFullYear()}${pad(sig.getMonth() + 1)}${pad(sig.getDate())}`;
+  const url = location.href.split("?")[0].split("#")[0];
+  const ics = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Bubu//Cumple//ES", "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",
+    `UID:cumple-${f}@bubu`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
+    `DTSTART;VALUE=DATE:${f}`, `DTEND;VALUE=DATE:${fsig}`,
+    `SUMMARY:🎁 Abrir la sorpresa de cumpleaños de ${NOMBRE}`,
+    `DESCRIPTION:Hoy se abre todo: globos, quiz, pastel y una carta. ${url}`,
+    `URL:${url}`,
+    "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Mañana es tu cumpleaños 🎂", "TRIGGER:-PT15H", "END:VALARM",
+    "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:¡Feliz cumpleaños! Abre tu sorpresa 🎁", "TRIGGER:PT9H", "END:VALARM",
+    "END:VEVENT", "END:VCALENDAR"
+  ].join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+  a.download = "cumpleanos.ics";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast("Listo: ábrelo para agregarlo a tu calendario 🗓️");
+}
+$("btn-calendario").addEventListener("click", descargarIcs);
+
+/* ---------- instalar como app (PWA) ---------- */
+let promptInstalar = null;
+addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); promptInstalar = e; });
+addEventListener("appinstalled", () => {
+  promptInstalar = null;
+  $("btn-instalar").classList.add("hidden");
+  toast("¡Instalada! La encuentras en tu pantalla de inicio 📲");
+});
+const yaInstalada = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+if (yaInstalada) $("btn-instalar").classList.add("hidden");
+$("btn-instalar").addEventListener("click", async () => {
+  if (promptInstalar) {
+    promptInstalar.prompt();
+    await promptInstalar.userChoice.catch(() => {});
+    promptInstalar = null;
+    return;
+  }
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  $("instalar-ayuda").textContent = ios
+    ? "En Safari: toca el botón Compartir ⬆️ y elige «Añadir a pantalla de inicio»."
+    : "En el menú de tu navegador (⋮) elige «Instalar app» o «Añadir a pantalla de inicio».";
+});
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
 
 /* ============================================================
    ARRANQUE
